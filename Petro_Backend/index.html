@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Nearest Police Station</title>
+</head>
+<body>
+    <h2>Find Nearest Police Station</h2>
+    <button onclick="getNearestPoliceStation()">Find Now</button>
+    <p id="location"></p>
+    <p id="result"></p>
+
+    <script>
+        function getNearestPoliceStation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async position => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+
+                    // Display user's current location
+                    document.getElementById("location").innerHTML = `
+                        <strong>Your Location:</strong><br>
+                        Latitude: ${lat}<br>
+                        Longitude: ${lon}<br>
+                    `;
+
+                    try {
+                        const response = await fetch(`http://localhost:3000/nearest-police-station?lat=${lat}&lon=${lon}`);
+                        const data = await response.json();
+
+                        if (data.error) {
+                            document.getElementById("result").innerText = "No police station found nearby.";
+                        } else {
+                            document.getElementById("result").innerHTML = `
+                                <strong>Nearest Police Station:</strong> ${data.nearest_police_station} <br>
+                                <strong>City:</strong> ${data.city} <br>
+                                <strong>State:</strong> ${data.state} <br>
+                                <strong>Distance:</strong> ${data.distance_km} km
+                            `;
+                        }
+                    } catch (error) {
+                        document.getElementById("result").innerText = "Error fetching data. Try again later.";
+                    }
+                }, error => {
+                    document.getElementById("location").innerText = "Location access denied! Please enable GPS.";
+                });
+            } else {
+                document.getElementById("location").innerText = "Geolocation is not supported by this browser.";
+            }
+        }
+    </script>
+</body>
+</html>
