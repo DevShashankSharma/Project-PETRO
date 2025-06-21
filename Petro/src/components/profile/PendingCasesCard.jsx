@@ -23,55 +23,57 @@ export default function PendingCasesCardWithList() {
     };
 
     return (
-        <div className="w-full max-w-md p-6 bg-gradient-to-br from-yellow-50 via-orange-50 to-yellow-100 dark:from-yellow-900 dark:via-orange-900 dark:to-yellow-800 rounded-3xl shadow-2xl border border-yellow-200 dark:border-yellow-700 space-y-5 transition-all duration-300">
-            <div className="flex items-center justify-between mb-2">
-                <h2 className="text-lg font-bold text-yellow-700 dark:text-yellow-100 flex items-center gap-2">
-                    <AlertTriangle className="text-yellow-500 dark:text-yellow-300 w-5 h-5" />
+        <div className="bg-[#0f172a] bg-opacity-90 shadow-xl rounded-2xl border border-yellow-600/20 relative overflow-hidden backdrop-blur-md py-4">
+            <div className="flex items-center justify-between mb-4 px-4">
+                <h2 className="text-xl font-extrabold text-yellow-800 dark:text-yellow-100 flex items-center gap-2 tracking-tight">
+                    <AlertTriangle className="text-yellow-500 dark:text-yellow-300 w-6 h-6 animate-pulse" />
                     Pending Cases
                 </h2>
-                <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                    <Clock4 className="w-4 h-4" />
-                    Updated just now
+                <span className="text-xs font-semibold bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300 px-3 py-1 rounded-full shadow border border-yellow-200 dark:border-yellow-800">
+                    {allCases.length} Total
                 </span>
             </div>
-
-            <div className="max-h-72 overflow-y-auto pr-1 light-scrollbar">
+            <div className="max-h-72 overflow-y-auto pr-1 light-scrollbar  px-4">
                 <ul className="space-y-3">
                     {visibleCases.map((c) => (
                         <li
                             key={c.id}
-                            className="bg-white/90 dark:bg-yellow-950/80 p-3 rounded-2xl shadow border border-yellow-100 dark:border-yellow-800 flex items-start gap-3 hover:scale-[1.02] hover:shadow-lg transition-transform"
-                        >
-                            <div className={`p-2 rounded-full shadow
-                                ${c.priority === "High"
-                                    ? "bg-gradient-to-tr from-red-500 via-yellow-400 to-yellow-300"
+                            className={`flex items-start gap-3 p-3 rounded-2xl border shadow-sm hover:scale-[.98] hover:shadow-lg transition-transform duration-200
+                                    ${c.priority === "High"
+                                    ? "bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-700"
                                     : c.priority === "Medium"
-                                        ? "bg-gradient-to-tr from-yellow-400 via-yellow-300 to-yellow-200"
-                                        : "bg-gradient-to-tr from-green-400 via-green-200 to-green-100"
+                                        ? "bg-yellow-100 dark:bg-yellow-900/30 border-yellow-200 dark:border-yellow-700"
+                                        : "bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-700"
+                                }`
+                            }
+                        >
+                            <div className={`p-2 rounded-full shadow-lg flex items-center justify-center
+                                    ${c.priority === "High"
+                                    ? "bg-red-500"
+                                    : c.priority === "Medium"
+                                        ? "bg-yellow-400"
+                                        : "bg-green-400"
                                 }`}>
                                 <FileWarning className="w-5 h-5 text-white drop-shadow" />
                             </div>
                             <div className="flex-1">
-                                <div className="text-sm font-bold text-gray-800 dark:text-yellow-100 truncate">{c.title}</div>
+                                <div className="text-base font-bold text-yellow-900 dark:text-yellow-100 truncate flex items-center gap-2">
+                                    {c.title}
+                                    {c.priority === "High" && (
+                                        <span className="ml-1 px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-900/40 text-xs text-red-700 dark:text-red-300 font-semibold animate-pulse">High</span>
+                                    )}
+                                    {c.priority === "Medium" && (
+                                        <span className="ml-1 px-2 py-0.5 rounded-full bg-yellow-100 dark:bg-yellow-900/40 text-xs text-yellow-700 dark:text-yellow-300 font-semibold">Medium</span>
+                                    )}
+                                    {c.priority === "Low" && (
+                                        <span className="ml-1 px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/40 text-xs text-green-700 dark:text-green-300 font-semibold">Low</span>
+                                    )}
+                                </div>
                                 <div className="text-xs text-gray-500 dark:text-yellow-300">{c.id}</div>
-                                <div className="text-xs text-gray-500 dark:text-yellow-400 mt-1 flex flex-wrap gap-2">
+                                <div className="text-xs text-gray-400 dark:text-yellow-400 mt-1 flex flex-wrap gap-2">
                                     <span>
-                                        Priority:{" "}
-                                        <span
-                                            className={`font-semibold ${
-                                                c.priority === "High"
-                                                    ? "text-red-600 dark:text-red-400"
-                                                    : c.priority === "Medium"
-                                                        ? "text-yellow-600 dark:text-yellow-300"
-                                                        : "text-green-600 dark:text-green-300"
-                                            }`}
-                                        >
-                                            {c.priority}
-                                        </span>
-                                    </span>
-                                    <span className="hidden sm:inline">•</span>
-                                    <span>
-                                        Reported: <span className="font-medium">{c.reportedAt}</span>
+                                        <Clock4 className="inline w-4 h-4 mr-1 align-text-bottom" />
+                                        {c.reportedAt}
                                     </span>
                                 </div>
                             </div>
@@ -79,12 +81,17 @@ export default function PendingCasesCardWithList() {
                     ))}
                 </ul>
                 {visibleCount < allCases.length && (
-                    <button
-                        onClick={showMore}
-                        className="block w-full text-center text-sm text-yellow-700 dark:text-yellow-200 font-semibold hover:underline mt-2 transition"
-                    >
-                        See more...
-                    </button>
+                    <div className="text-center mt-4 mb-2">
+                        <button
+                            onClick={showMore}
+                            className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-yellow-500 text-white font-bold shadow-lg hover:bg-yellow-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 active:scale-95"
+                        >
+                            <span>Show More</span>
+                            <svg className="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                    </div>
                 )}
             </div>
         </div>
