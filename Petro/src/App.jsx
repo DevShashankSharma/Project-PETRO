@@ -6,6 +6,7 @@ import Sidebar from "./components/Sidebar";
 import AuthPage from "./components/AuthPage";
 import Dashboard from "./components/dashboard/Dashboard";
 import Profile from "./components/profile/Profile";
+import CasePage from "./components/case/CasePage";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false); // Sidebar state
@@ -28,6 +29,7 @@ function App() {
                 <Route path="/home" element={<Home />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/case" element={<CasePage />} />
               </Routes>
             </Router> 
           </div>
