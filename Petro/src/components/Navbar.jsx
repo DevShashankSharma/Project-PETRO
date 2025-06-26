@@ -1,12 +1,13 @@
 
 import { Search, UserCircle, HelpCircle, Bell, Menu, X, ListTodo } from "lucide-react";
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; 
 
 const Navbar = ({ isOpen, setIsOpen }) => {
 
     return (
         <nav className="sticky top-0 z-50 w-full  px-4 flex justify-between items-center shadow-md bg-gray-50 dark:bg-gray-800 transition-all h-12">
             {/* Website Logo */}
+            {/* <PetroLogo /> */}
             <div
                 className={` flex items-center justify-center w-8 h-8  rounded-[20%]
                             bg-gradient-to-r from-purple-600 to-pink-500 shadow-lg transition-all duration-300 
